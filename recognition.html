@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Recognition</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ecf0f1;
+        }
+        
+        .nav-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            background-color: #34495e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .nav-btn.active {
+            background-color: #3498db;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+        
+        .page {
+            display: none;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .upload-container {
+            border: 2px dashed #3498db;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        
+        #imagePreview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Chatbot styles */
+        .chat-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            max-width: 80%;
+        }
+        
+        .user-message {
+            background-color: #e3f2fd;
+            margin-left: auto;
+        }
+        
+        .bot-message {
+            background-color: #f1f1f1;
+            margin-right: auto;
+        }
+        
+        .chat-input {
+            display: flex;
+        }
+        
+        #userInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        #sendBtn {
+            margin-left: 10px;
+        }
+        
+        /* Disease info styles */
+        .disease-info {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .disease-info h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .pesticide-card {
+            background-color: #e8f4f8;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .pesticide-card h4 {
+            margin-top: 0;
+            color: #27ae60;
+        }
+        
+        .quick-reply {
+            display: inline-block;
+            background-color: #e3f2fd;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .quick-reply:hover {
+            background-color: #bbdefb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Plant Doctor</h2>
+            <button class="nav-btn active" onclick="showPage('prediction')">Disease Prediction</button>
+            <button class="nav-btn" onclick="showPage('chatbot')">Chatbot</button>
+        </div>
+        
+        <div class="main-content">
+            <!-- Disease Prediction Page -->
+            <div id="prediction" class="page active">
+                <h1>Plant Disease Prediction</h1>
+                
+                <div class="upload-container">
+                    <h3>Upload Plant Leaf Image</h3>
+                    <input type="file" id="imageUpload" accept="image/*">
+                    <img id="imagePreview" alt="Image Preview">
+                </div>
+                
+                <button id="predictBtn" class="btn" onclick="predictDisease()">Predict</button>
+                
+                <div class="spinner" id="spinner"></div>
+                
+                <div class="result-container" id="resultContainer" style="display: none;">
+                    <h2>Our Prediction</h2>
+                    <div id="predictionResult"></div>
+                    <div id="recommendation"></div>
+                </div>
+            </div>
+            
+            <!-- Chatbot Page -->
+            <div id="chatbot" class="page">
+                <h1>Plant Disease Chatbot</h1>
+                
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <p>Hello! I'm your Plant Doctor assistant. I can help you with:</p>
+                            <div class="quick-reply" onclick="insertQuickReply('apple scab')">Apple Scab</div>
+                            <div class="quick-reply" onclick="insertQuickReply('tomato blight')">Tomato Blight</div>
+                            <div class="quick-reply" onclick="insertQuickReply('grape black rot')">Grape Black Rot</div>
+                            <div class="quick-reply" onclick="insertQuickReply('citrus greening')">Citrus Greening</div>
+                            <p>Ask me about any plant disease or type "help" for assistance.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <input type="text" id="userInput" placeholder="Ask about plant diseases..." autocomplete="off">
+                        <button class="btn" id="sendBtn" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Disease database with detailed information and pesticides
+        const diseaseDatabase = {
+            "apple scab": {
+                description: "Apple scab is a fungal disease caused by Venturia inaequalis that affects apple trees, causing dark, scaly lesions on leaves and fruit.",
+                symptoms: "Olive-green to black spots on leaves, distorted or curled leaves, scabby spots on fruit that may become corky",
+                prevention: "Plant resistant varieties, remove fallen leaves in autumn, ensure good air circulation through proper pruning",
+                pesticides: [
+                    {
+                        name: "Myclobutanil (Immunox)",
+                        type: "Fungicide",
+                        application: "Apply at bud break and continue every 7-10 days during wet weather",
+                        safety: "Wear protective clothing and avoid application when bees are active"
+                    },
+                    {
+                        name: "Captan",
+                        type: "Fungicide",
+                        application: "Apply every 10-14 days during periods of leaf wetness",
+                        safety: "Do not apply within 3 days of harvest"
+                    },
+                    {
+                        name: "Sulfur",
+                        type: "Fungicide",
+                        application: "Apply every 7-10 days when conditions favor disease",
+                        safety: "Do not use when temperatures exceed 80°F to avoid plant damage"
+                    }
+                ],
+                organic: "Use potassium bicarbonate or copper-based fungicides, apply neem oil"
+            },
+            "tomato blight": {
+                description: "Tomato blight refers to either early blight (Alternaria solani) or late blight (Phytophthora infestans), which are fungal diseases that can devastate tomato plants.",
+                symptoms: "Early blight: concentric rings on leaves with yellow halos. Late blight: water-soaked lesions that turn brown, white fungal growth under leaves in humid conditions",
+                prevention: "Use disease-free seeds, rotate crops yearly, space plants for good air circulation, water at base of plants",
+                pesticides: [
+                    {
+                        name: "Chlorothalonil (Bravo, Daconil)",
+                        type: "Fungicide",
+                        application: "Apply every 7-10 days when conditions favor disease",
+                        safety: "Wear protective clothing and avoid contact with skin"
+                    },
+                    {
+                        name: "Mancozeb",
+                        type: "Fungicide",
+                        application: "Apply every 5-7 days for late blight during wet weather",
+                        safety: "Do not apply within 5 days of harvest"
+                    },
+                    {
+                        name: "Copper-based fungicides",
+                        type: "Fungicide",
+                        application: "Apply every 7-10 days as preventive treatment",
+                        safety: "Can accumulate in soil with repeated use"
+                    }
+                ],
+                organic: "Use copper fungicides, Bacillus subtilis (Serenade), or hydrogen peroxide sprays"
+            },
+            "grape black rot": {
+                description: "Black rot is a fungal disease (Guignardia bidwellii) that affects grapes, causing fruit rot and leaf spots that can significantly reduce yields.",
+                symptoms: "Brown spots on leaves with black margins, shriveled black mummified berries, small black fruiting bodies on infected tissue",
+                prevention: "Prune vines to improve air circulation, remove infected berries and canes, clean up fallen leaves and fruit",
+                pesticides: [
+                    {
+                        name: "Myclobutanil (Rally)",
+                        type: "Fungicide",
+                        application: "Apply at pre-bloom, bloom, and every 14 days until veraison",
+                        safety: "Maximum of 5 applications per season"
+                    },
+                    {
+                        name: "Azoxystrobin (Abound)",
+                        type: "Fungicide",
+                        application: "Apply every 7-14 days starting at bud break",
+                        safety: "Do not apply more than 6 times per season"
+                    },
+                    {
+                        name: "Mancozeb",
+                        type: "Fungicide",
+                        application: "Apply every 7-10 days during periods of infection risk",
+                        safety: "Wear protective clothing during application"
+                    }
+                ],
+                organic: "Use sulfur or copper-based fungicides, apply at 10-14 day intervals"
+            },
+            "citrus greening": {
+                description: "Also known as Huanglongbing (HLB), citrus greening is a bacterial disease (Candidatus Liberibacter) spread by psyllids that causes misshapen, bitter fruit and tree decline.",
+                symptoms: "Yellow shoots with blotchy mottled leaves, small upright leaves, lopsided fruit with bitter taste, premature fruit drop",
+                prevention: "Control Asian citrus psyllid vectors with insecticides, remove infected trees, use disease-free nursery stock",
+                pesticides: [
+                    {
+                        name: "Imidacloprid (Bayer Advanced)",
+                        type: "Systemic insecticide",
+                        application: "Soil drench in spring to control psyllids",
+                        safety: "Do not apply when trees are flowering to protect bees"
+                    },
+                    {
+                        name: "Cyantraniliprole (Exirel)",
+                        type: "Insecticide",
+                        application: "Foliar spray when psyllids are present",
+                        safety: "Minimum 7-day interval between applications"
+                    },
+                    {
+                        name: "Spinetoram (Delegate)",
+                        type: "Insecticide",
+                        application: "Apply when psyllid nymphs are present",
+                        safety: "Toxic to bees - do not apply during bloom"
+                    }
+                ],
+                organic: "Use kaolin clay as a repellent, release Tamarixia radiata wasps (biological control), apply horticultural oils"
+            }
+        };
+
+        // Show selected page and hide others
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update active button in sidebar
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        // Image upload preview
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Disease prediction function
+        function predictDisease() {
+            const fileInput = document.getElementById('imageUpload');
+            const resultContainer = document.getElementById('resultContainer');
+            const spinner = document.getElementById('spinner');
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                resultContainer.style.display = 'block';
+                resultContainer.innerHTML = `
+                    <div class="warning">Please upload an image first.</div>
+                `;
+                return;
+            }
+            
+            // Show spinner
+            spinner.style.display = 'block';
+            resultContainer.style.display = 'none';
+            
+            // Simulate prediction (in a real app, you would send to a server)
+            setTimeout(() => {
+                spinner.style.display = 'none';
+                resultContainer.style.display = 'block';
+                
+                // Mock prediction - in a real app, this would come from your model
+                const class_name = [
+                    'Apple___Apple_scab',
+                    'Apple___Black_rot',
+                    'Apple___Cedar_apple_rust',
+                    'Apple___healthy',
+                    'Blueberry___healthy',
+                    'Cherry_(including_sour)___Powdery_mildew',
+                    'Cherry_(including_sour)___healthy',
+                    'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot',
+                    'Corn_(maize)___Common_rust_',
+                    'Corn_(maize)___Northern_Leaf_Blight',
+                    'Corn_(maize)___healthy',
+                    'Grape___Black_rot',
+                    'Grape___Esca_(Black_Measles)',
+                    'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)',
+                    'Grape___healthy',
+                    'Orange___Haunglongbing_(Citrus_greening)',
+                    'Peach___Bacterial_spot',
+                    'Peach___healthy',
+                    'Pepper,_bell___Bacterial_spot',
+                    'Pepper,_bell___healthy',
+                    'Potato___Early_blight',
+                    'Potato___Late_blight',
+                    'Potato___healthy',
+                    'Raspberry___healthy',
+                    'Soybean___healthy',
+                    'Squash___Powdery_mildew',
+                    'Strawberry___Leaf_scorch',
+                    'Strawberry___healthy',
+                    'Tomato___Bacterial_spot',
+                    'Tomato___Early_blight',
+                    'Tomato___Late_blight',
+                    'Tomato___Leaf_Mold',
+                    'Tomato___Septoria_leaf_spot',
+                    'Tomato___Spider_mites Two-spotted_spider_mite',
+                    'Tomato___Target_Spot',
+                    'Tomato___Tomato_Yellow_Leaf_Curl_Virus',
+                    'Tomato___Tomato_mosaic_virus',
+                    'Tomato___healthy'
+                ];
+                
+                const randomIndex = Math.floor(Math.random() * class_name.length);
+                const predicted_class = class_name[randomIndex];
+                const simpleName = predicted_class.replace(/.+___/, '').replace(/_/g, ' ').toLowerCase();
+                
+                // Get disease info if available
+                let diseaseInfo = "";
+                let pesticideInfo = "";
+                
+                if (diseaseDatabase[simpleName]) {
+                    const disease = diseaseDatabase[simpleName];
+                    diseaseInfo = `
+                        <div class="disease-info">
+                            <h3>About ${simpleName}</h3>
+                            <p><strong>Description:</strong> ${disease.description}</p>
+                            <p><strong>Symptoms:</strong> ${disease.symptoms}</p>
+                            <p><strong>Prevention:</strong> ${disease.prevention}</p>
+                        </div>
+                    `;
+                    
+                    pesticideInfo = `<div class="pesticide-card">
+                        <h4>Recommended Pesticides:</h4>`;
+                    
+                    disease.pesticides.forEach(pesticide => {
+                        pesticideInfo += `
+                            <p><strong>${pesticide.name}</strong> (${pesticide.type})<br>
+                            <em>Application:</em> ${pesticide.application}<br>
+                            <em>Safety:</em> ${pesticide.safety}</p>
+                        `;
+                    });
+                    
+                    pesticideInfo += `
+                        <p><strong>Organic Options:</strong> ${disease.organic}</p>
+                        </div>
+                    `;
+                }
+                
+                // Display results
+                document.getElementById('predictionResult').innerHTML = `
+                    <div class="success">Model predicts it's a <strong>${predicted_class}</strong></div>
+                    ${diseaseInfo}
+                `;
+                
+                document.getElementById('recommendation').innerHTML = `
+                    <div class="info">
+                        <h3>Treatment Recommendations</h3>
+                        ${pesticideInfo || "No specific recommendation available for this condition."}
+                    </div>
+                `;
+            }, 2000); // Simulate processing delay
+        }
+        
+        // Chatbot functionality
+        function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const chatMessages = document.getElementById('chatMessages');
+            
+            if (userInput.value.trim() === '') return;
+            
+            const userMessage = userInput.value.toLowerCase();
+            
+            // Add user message
+            chatMessages.innerHTML += `
+                <div class="message user-message">${userInput.value}</div>
+            `;
+            
+            // Process bot response
+            let botResponse = "";
+            let diseaseFound = null;
+            
+            // Check if message contains any disease names
+            for (const disease in diseaseDatabase) {
+                if (userMessage.includes(disease)) {
+                    diseaseFound = disease;
+                    break;
+                }
+            }
+            
+            if (userMessage.includes('help') || userMessage.includes('hi') || userMessage.includes('hello')) {
+                botResponse = `
+                    <p>Hello! I'm your Plant Doctor assistant. I can help you with information about:</p>
+                    <div class="quick-reply" onclick="insertQuickReply('apple scab')">Apple Scab</div>
+                    <div class="quick-reply" onclick="insertQuickReply('tomato blight')">Tomato Blight</div>
+                    <div class="quick-reply" onclick="insertQuickReply('grape black rot')">Grape Black Rot</div>
+                    <div class="quick-reply" onclick="insertQuickReply('citrus greening')">Citrus Greening</div>
+                    <p>Ask me about symptoms, prevention, or pesticides for any plant disease.</p>
+                `;
+            }
+            else if (diseaseFound) {
+                const disease = diseaseDatabase[diseaseFound];
+                botResponse = `
+                    <div class="disease-info">
+                        <h3>About ${diseaseFound}</h3>
+                        <p><strong>Description:</strong> ${disease.description}</p>
+                        <p><strong>Symptoms:</strong> ${disease.symptoms}</p>
+                        <p><strong>Prevention:</strong> ${disease.prevention}</p>
+                    </div>
+                    <div class="pesticide-card">
+                        <h4>Recommended Pesticides:</h4>
+                `;
+                
+                disease.pesticides.forEach(pesticide => {
+                    botResponse += `
+                        <p><strong>${pesticide.name}</strong> (${pesticide.type})<br>
+                        <em>Application:</em> ${pesticide.application}<br>
+                        <em>Safety:</em> ${pesticide.safety}</p>
+                    `;
+                });
+                
+                botResponse += `
+                    <p><strong>Organic Options:</strong> ${disease.organic}</p>
+                    </div>
+                    <p>Would you like more information about any specific pesticide?</p>
+                `;
+            }
+            else if (userMessage.includes('pesticide') || userMessage.includes('spray') || userMessage.includes('treatment')) {
+                botResponse = "I can recommend pesticides for specific diseases. Please tell me which plant disease you're dealing with, or try one of these:";
+                for (const disease in diseaseDatabase) {
+                    botResponse += `<div class="quick-reply" onclick="insertQuickReply('${disease}')">${disease}</div>`;
+                }
+            }
+            else {
+                botResponse = "I'm not sure I understand. I can provide information about plant diseases and pesticide recommendations. Try asking about a specific disease like 'apple scab' or 'tomato blight', or type 'help' for assistance.";
+                for (const disease in diseaseDatabase) {
+                    botResponse += `<div class="quick-reply" onclick="insertQuickReply('${disease}')">${disease}</div>`;
+                }
+            }
+            
+            // Add bot response after a short delay
+            setTimeout(() => {
+                chatMessages.innerHTML += `
+                    <div class="message bot-message">${botResponse}</div>
+                `;
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 500);
+            
+            // Clear input
+            userInput.value = '';
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Insert quick reply into input field
+        function insertQuickReply(text) {
+            const userInput = document.getElementById('userInput');
+            userInput.value = text;
+            userInput.focus();
+        }
+        
+        // Allow pressing Enter to send message
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

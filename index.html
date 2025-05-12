@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Disease Prediction</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    .slider {
+      position: relative;
+      overflow: hidden;
+    }
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .slide {
+      min-width: 20%; /* Adjust this to show more or fewer images at once */
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body class="font-roboto bg-gray-100">
+  <!-- Navbar -->
+  <nav class="bg-green-600 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="text-white text-2xl font-bold">
+        <img alt="Logo of the Plant Disease Prediction website" class="inline-block mr-2" height="50" src="https://storage.googleapis.com/a1aa/image/BdDqqxnRToGOwfRwI8Fed_IEE6nb1v5DU-VC3UPsU44.jpg" width="50"/>
+        Plant Disease Prediction
+      </div>
+      <div>
+        <a class="text-white text-lg mx-4 font-bold" href="">Home</a>
+        <a class="text-white text-lg mx-4" href="/about.html">About Us</a>
+        <a class="text-white text-lg mx-4" href="/recognition.html">Disease Recognition</a>
+      </div>
+    </div>
+  </nav>
+  <!-- Home Section -->
+  <section class="container mx-auto p-8" id="home">
+    <h1 class="text-4xl font-bold text-center mb-8">Welcome to Plant Disease Prediction</h1>
+    <p class="text-lg text-center mb-8">
+      Our website helps you predict plant diseases by analyzing images of your plants. Simply upload an image, and our system will identify any diseases present.
+    </p>
+    <!-- Video Section -->
+    <div class="flex justify-center mb-8 px-4">
+      <video class="w-full max-w-5xl" controls="">
+        <source src="v4.webm" type="video/mp4"/>
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <!-- Plants and Crops Section -->
+    <h2 class="text-3xl font-bold text-center mb-4">Plants and Crops</h2>
+    <p class="text-lg text-center mb-8 px-8">
+      Understanding the health of your plants and crops is essential for successful gardening and farming. Our plant disease prediction system utilizes advanced machine learning algorithms to analyze images of your plants, identifying any potential diseases early on. By recognizing symptoms and providing timely advice, we empower you to take action before issues escalate, ensuring your plants thrive and produce healthy yields.
+    </p>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+      <div class="flex justify-center">
+        <img alt="Healthy Plant" class="w-56 h-auto rounded shadow-md" src="l4.jpg" />
+      </div>
+      <div class="flex justify-center">
+        <img alt="Plant with Disease" class="w-56 h-auto rounded shadow-md" src="l5.jpg" />
+      </div>
+      <div class="flex justify-center">
+        <img alt="Healthy Plant" class="w-56 h-auto rounded shadow-md" src="l6.jpg" />
+      </div>
+      <div class="flex justify-center">
+        <img alt="Plant with Disease" class="w-56 h-auto rounded shadow-md" src="l7.jpg" />
+      </div>
+      <div class="flex justify-center">
+        <img alt="Healthy Plant" class="w-56 h-auto rounded shadow-md" src="l8.jpg" />
+      </div>
+      <div class="flex justify-center">
+        <img alt="Plant with Disease" class="w-56 h-auto rounded shadow-md" src="l9.jpg" />
+      </div>
+    </div>
+    <!-- Save Your Plants with Expert Help Section -->
+    <div class="w-full px-8 xl:px-0 py-4 md:py-10 bg-white mb-8">
+      <div class="w-full px-[0.5rem] mx-auto xl:max-w-[1320px] lg:max-w-[1140px] max-w-[960px] flex flex-col gap-6 md:gap-[170px] items-center justify-center md:flex-row-reverse">
+        <div class="w-full max-w-[180px] md:max-w-[300px] lg:min-w-[300px] mx-auto lg:mx-0 features-section_image__container__15qlE">
+          <img alt="Illustration of expert help for plants" class="w-full h-auto" height="300" src="https://strapi.myplantin.com/home_expert_help_b0d533886d.webp" width="300"/>
+        </div>
+        <div class="w-full md:w-[600px]">
+          <h2 class="font-semibold text-3xl md:text-4xl mb-2 md:mb-3">Save Your Plants with Expert Help</h2>
+          <div class="font-normal text-16 md:text-20 mb-3 md:mb-6">
+            <article>
+              <p class="text-16 my-3 mx-0 font-normal overflow-hidden">
+                Bring your plants back to life with direct advice from a real botanist. Get tailored guidance for any plant issue — whether it’s pests, diseases, or general decline — and watch your plant bounce back stronger than ever.
+              </p>
+              <p class="text-16 my-3 mx-0 font-normal overflow-hidden">
+                Our experts are available to provide personalized recommendations based on your specific plant type and environmental conditions. With their help, you can ensure your plants receive the best care possible.
+              </p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Recognize Unknown Plants Section -->
+    <div class="w-full px-8 mx-auto xl:max-w-[1320px] lg:max-w-[1140px] max-w-[960px] flex flex-col gap-6 md:gap-[170px] items-center justify-center md:flex-row">
+      <div class="w-full max-w-[180px] md:max-w-[300px] lg:min-w-[300px] mx-auto lg:mx-0 features-section_image__container__15qlE">
+        <img alt="Illustration of recognizing unknown plants" class="w-full h-auto" height="300" src="https://strapi.myplantin.com/home_recognize_plants_4808b08867.webp" width="300"/>
+      </div>
+      <div class="w-full md:w-[600px]">
+        <h2 class="font-semibold text-3xl md:text-4xl mb-2 md:mb-3">Recognize Unknown Plants</h2>
+        <div class="font-normal text-16 md:text-20 mb-3 md:mb-6">
+          <article>
+            <p class="text-16 my-3 mx-0 font-normal overflow-hidden">
+              Take a photo of any plant and get an accurate result using our extensive plant database. Identify any rare plants quickly and precisely, and make your identification simple and reliable with one of the largest collections of plant species.
+            </p>
+            <p class="text-16 my-3 mx-0 font-normal overflow-hidden">
+              Our advanced algorithms analyze the image and compare it with thousands of known species, providing you with instant feedback and information about the plant's care requirements and potential issues.
+            </p>
+          </article>
+        </div>
+      </div>
+    </div>
+    <!-- Grow Healthy Plants Section -->
+    <div class="w-full px-8 xl:px-0 py-4 md:py-10 bg-[#F6FFFC]">
+      <div class="w-full px-[0.5rem] mx-auto xl:max-w-[1320px] lg:max-w-[1140px] max-w-[960px] flex flex-col gap-6 md:gap-[170px] items-center justify-center md:flex-row">
+        <div class="w-full max-w-[180px] md:max-w-[300px] lg:min-w-[300px] mx-auto lg:mx-0 features-section_image__container__15qlE">
+          <img alt="Illustration of healthy plants" class="w-full h-auto" height="300" src="https://strapi.myplantin.com/home_healthy_plants_b28cedec47.webp" width="300"/>
+        </div>
+        <div class="w-full md:w-[600px]">
+          <h2 class="font-semibold text-3xl md:text-4xl mb-2 md:mb-3">Grow Healthy Plants</h2>
+          <div class="font-normal text-16 md:text-20 mb-3 md:mb-6">
+            <article>
+              <p class="text-16 my-3 mx-0 font-normal overflow-hidden">
+                Prevent plant diseases with our advanced diagnostic tool. Detect issues early with our innovative ML-model and a vast database of plant symptoms, giving your plants the care they need to stay healthy and flourish.
+              </p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- How It Works Section -->
+    <div class="bg-white p-8 rounded shadow-md mb-8">
+      <div class="flex flex-col md:flex-row">
+        <div class="w-full md:w-1/2 mb-4 md:mb-0">
+          <h2 class="text-3xl font-bold mb-4">How It Works</h2>
+          <p class="text-lg mb-4">
+            Our system uses advanced machine learning algorithms to analyze images of plants and detect any diseases. Follow these simple steps:
+          </p>
+          <ol class="list-decimal list-inside text-lg mb-4">
+            <li>Take a clear picture of the plant you want to analyze.</li>
+            <li>Upload the image to our website.</li>
+            <li>Our system will process the image and provide a diagnosis.</li>
+          </ol>
+          <p class="text-lg mb-4">
+            With our user-friendly interface, you can easily navigate through the process and receive instant feedback. Our goal is to empower you with the knowledge to keep your plants healthy and thriving.
+          </p>
+        </div>
+        <div class="w-full md:w-1/2">
+          <img alt="Illustration showing the steps to use the Plant Disease Prediction website" class="w-full max-w-md mx-auto" height="400" src="https://storage.googleapis.com/a1aa/image/zAqAHrFZ1vzkY5c9RfeWjaTS5Q1l4h8Zy0gsL71h-SM.jpg" width="600"/>
+        </div>
+      </div>
+    </div>
+    <!-- Early Detection Section -->
+    <div class="bg-white p-8 rounded shadow-md mb-8">
+      <div class="flex flex-col md:flex-row">
+        <div class="w-full md:w-1/2 mb-4 md:mb-0">
+          <img alt="Image showing early detection of plant diseases" class="w-full max-w-md mx-auto" height="400" src="l3.png" width="600"/>
+        </div>
+        <div class="w-full md:w-1/2">
+          <h2 class="text-3xl font-bold mb-4">Early Detection</h2>
+          <p class="text-lg mb-4">
+            Early detection of plant diseases is crucial for preventing the spread and ensuring healthy crop yields. Our system can help you identify diseases at an early stage, allowing for timely intervention.
+          </p>
+          <p class="text-lg mb-4">
+            By utilizing our platform, you can monitor your plants regularly and catch any signs of distress before they escalate. This proactive approach not only saves your plants but also enhances your gardening experience.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gap before Slider -->
+    <div class="mb-8"></div>
+
+    <!-- Plant Diseases Slider Section -->
+    <h2 class="text-3xl font-bold text-center mb-4">Plant Diseases</h2>
+    <div class="slider mb-8">
+      <div class="slides">
+        <div class="slide">
+          <img src="i1.webp" alt="Image 1" class="w-48 h-48 object-cover mx-auto" />
+        </div>
+        <div class="slide">
+          <img src="i2.jpeg" alt="Image 2" class="w-48 h-48 object-cover mx-auto" />
+        </div>
+        <div class="slide">
+          <img src="i3.png" alt="Image 3" class="w-48 h-48 object-cover mx-auto" />
+        </div>
+        <div class="slide">
+          <img src="i4.jpeg" alt="Image 4" class="w-48 h-48 object-cover mx-auto" />
+        </div>
+        <div class="slide">
+          <img src="i5.jpeg" alt="Image 5" class="w-48 h-48 object-cover mx-auto" />
+        </div>
+        <div class="slide">
+          <img src="i6.jpeg" alt="Image 6" class="w-48 h-48 object-cover mx-auto" />
+        </div>
+        <div class="slide">
+          <img src="i7.jpeg" alt="Image 7" class="w-48 h-48 object-cover mx-auto" />
+        </div>
+        <div class="slide">
+          <img src="i8.jpeg" alt="Image 8" class="w-48 h-48 object-cover mx-auto" />
+        </div>
+        <div class="slide">
+          <img src="i9.jpeg" alt="Image 9" class="w-48 h-48 object-cover mx-auto" />
+        </div>
+        <div class="slide">
+          <img src="i10.jpeg" alt="Image 10" class="w-48 h-48 object-cover mx-auto" />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentIndex = 0;
+      const slides = document.querySelector('.slides');
+      const totalSlides = document.querySelectorAll('.slide').length;
+
+      function showNextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        slides.style.transform = `translateX(-${currentIndex * 20}%)`; // Adjusted to move all images
+      }
+
+      setInterval(showNextSlide, 3000); // Change slide every 3 seconds
+    </script>
+  </section>
+  <!-- Footer -->
+  <footer class="bg-green-600 text-white p-8 mt-8">
+    <div class="container mx-auto">
+      <div class="flex flex-col lg:flex-row justify-between">
+        <div class="flex flex-col lg:flex-row gap-8 w-full">
+          <div class="mb-8 lg:mb-0 w-full lg:w-1/3">
+            <h3 class="font-bold mb-4">Plants Care</h3>
+            <ul>
+              <li class="mb-2">
+                <a href="/plant-identifier" target="_self" title="Plant Identifier">Plant Identifier</a>
+              </li>
+              <li class="mb-2">
+                <a href="/plant-problems" target="_self" title="Plant Problems">Plant Problems</a>
+              </li>
+              <li class="mb-2">
+                <a href="/blog" target="_self" title="Blog">Blog</a>
+              </li>
+              <li class="mb-2">
+                <a href="/ask-the-botanist" target="_self" title="Ask the botanist">Ask the botanist</a>
+              </li>
+              <li class="mb-2">
+                <a href="/weed" target="_self" title="Weed community">Weed community</a>
+              </li>
+            </ul>
+          </div>
+          <div class="mb-8 lg:mb-0 w-full lg:w-1/3">
+            <h3 class="font-bold mb-4">Company</h3>
+            <ul>
+              <li class="mb-2">
+                <a href="/about-us" target="_self" title="About us">About us</a>
+              </li>
+              <li class="mb-2">
+                <a href="/plantin-app-review" target="_self" title="PlantIn App review">PlantIn App review</a>
+              </li>
+              <li class="mb-2">
+                <a href="/ratings-and-reviews" target="_self" title="Ratings and reviews">Ratings and reviews</a>
+              </li>
+              <li class="mb-2">
+                <a href="/hero-of-ukraine" target="_self" title="Hero of Ukraine">Hero of Ukraine</a>
+              </li>
+              <li class="mb-2">
+                <a href="/faq" target="_self" title="FAQ">FAQ</a>
+              </li>
+              <li class="mb-2">
+                <a href="/contact-us" target="_self" title="Contact us">Contact us</a>
+              </li>
+              <li class="mb-2">
+                <a href="/subscription" target="_self" title="Subscription">Subscription</a>
+              </li>
+              <li class="mb-2">
+                <a href="/site-map.html" target="_self" title="Sitemap">Sitemap</a>
+              </li>
+            </ul>
+          </div>
+          <div class="mb-8 lg:mb-0 w-full lg:w-1/3">
+            <h3 class="font-bold mb-4">Terms and conditions</h3>
+            <ul>
+              <li class="mb-2">
+                <a href="https://legal.myplantin.com/vortemol/terms-of-service.html" target="_blank" title="Terms of Service">Terms of Service</a>
+              </li>
+              <li class="mb-2">
+                <a href="https://legal.myplantin.com/vortemol/money-back-policy.html" target="_blank" title="Money Back Policy">Money Back Policy</a>
+              </li>
+              <li class="mb-2">
+                <a href="https://legal.myplantin.com/vortemol/account.html" target="_blank" title="Subscription Policy">Subscription Policy</a>
+              </li>
+              <li class="mb-2">
+                <a href="https://legal.myplantin.com/vortemol/privacy-policy.html" target="_blank" title="Privacy Policy">Privacy Policy</a>
+              </li>
+              <li class="mb-2">
+                <a href="/do-not-sell" target="_self" title="Do not sell my personal information">Do not sell my personal information</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
